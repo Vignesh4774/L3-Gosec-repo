@@ -1,0 +1,59 @@
+apiVersion: automation.cloudbees.io/v1alpha1
+kind: workflow
+name: mcp-prior-approval-subject-data
+on:
+  workflow_dispatch:
+permissions:
+  scm-token-own: read
+  scm-token-org: read
+  id-token: write
+metadata:
+  stages/v1alpha1:
+    - name: Gate
+      jobs:
+        - before-approval-check
+        - approval
+    - name: After
+      jobs:
+        - after-approval-check
+jobs:
+  before-approval-check:
+    steps:
+      - name: Case 2 - checkpoint before the gate is answered
+        id: before
+        continue-on-error: true
+        uses: cloudbees-io/policy-check/actions/evaluate-policy-context@v1
+        with:
+          checkpoint-type: stage
+          checkpoint-name: Gate
+          checkpoint-position: entry
+      - name: Print before-gate action
+        uses: docker://alpine:3.20
+        run: echo "BEFORE_GATE action=${{ steps.before.outputs.action }}"
+
+  approval:
+    needs: before-approval-check
+    timeout-minutes: 120
+    delegates: cloudbees-io/manual-approval/custom-job.yml@v1
+    with:
+      instructions: CBP-51071 E2E - approve to test prior_human_approval, or reject for the negative case.
+      disallowLaunchByUser: false
+      approvers: astrutsynskyi@cloudbees.com
+      notifyAllEligibleUsers: false
+
+  after-approval-check:
+    needs: approval
+    steps:
+      - name: Case 1 - checkpoint after a human approved
+        id: after
+        continue-on-error: true
+        uses: cloudbees-io/policy-check/actions/evaluate-policy-context@v1
+        with:
+          checkpoint-type: stage
+          checkpoint-name: After
+          checkpoint-position: entry
+      - name: Print after-gate action
+        uses: docker://alpine:3.20
+        run: |
+          echo "AFTER_GATE action=${{ steps.after.outputs.action }}"
+          echo "AFTER_GATE details=${{ steps.after.outputs.details }}"
