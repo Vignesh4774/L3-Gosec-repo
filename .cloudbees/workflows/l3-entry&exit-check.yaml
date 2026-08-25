@@ -1,6 +1,6 @@
 apiVersion: automation.cloudbees.io/v1alpha1
 kind: workflow
-name: L3-entry&exit-check
+name: L3-entry-and-exit-check
 on:
   workflow_dispatch:
 jobs:
