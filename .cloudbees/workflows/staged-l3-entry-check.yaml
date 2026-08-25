@@ -17,7 +17,8 @@ metadata:
 jobs:
   scan-job:
     steps:
-      - uses: docker://alpine:3.18
+      - run: echo "scan-job running"
+        uses: docker://alpine:3.18
         name: Run step
   independent-job:
     needs: scan-job
