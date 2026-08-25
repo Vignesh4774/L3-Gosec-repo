@@ -1,0 +1,25 @@
+apiVersion: automation.cloudbees.io/v1alpha1
+kind: workflow
+name: L3-entry&exit-check
+on:
+  workflow_dispatch:
+jobs:
+  scan-job:
+    steps:
+      - name: Run step
+        uses: docker://alpine:3.18
+        run: echo "scan-job running"
+  independent-job:
+    needs:
+      - scan-job
+    steps:
+      - name: Run step
+        uses: docker://alpine:3.18
+        run: echo "independent-job running"
+  post-scan-job:
+    needs:
+      - independent-job
+    steps:
+      - name: Run step
+        uses: docker://alpine:3.18
+        run: echo "post-scan-job running"
