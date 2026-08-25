@@ -37,7 +37,7 @@ jobs:
     with:
       instructions: CBP-51071 E2E - approve to test prior_human_approval, or reject for the negative case.
       disallowLaunchByUser: false
-      approvers: sperumal@cloudbees.com
+      approvers: sperumal@cloudbees.com, vpalsamy@cloudbees.com
       notifyAllEligibleUsers: false
   after-approval-check:
     needs: approval
