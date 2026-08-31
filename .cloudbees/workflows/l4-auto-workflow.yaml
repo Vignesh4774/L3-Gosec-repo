@@ -9,10 +9,9 @@ permissions:
   id-token: write
 jobs:
   snyk-scan-job:
-    scan-and-evaluate:
-      outputs:
-       policy-subject: ${{ steps.snyk-sast-step.outputs.policy-subject }}
-      steps:
+    outputs:
+      policy-subject: ${{ steps.snyk-sast-step.outputs.policy-subject }}
+    steps:
 
       - name: checkout-source-code
         uses: cloudbees-io/checkout@v1
@@ -58,7 +57,7 @@ jobs:
         id: gitleaks-step
         uses: cloudbees-io/gitleaks-plugin@v1
         with:
-            workspace-dir: "auto-pe-secret-scan-repo"
+          workspace-dir: "auto-pe-secret-scan-repo"
 
       - id: print-gitleaks-outputs
         name: Print gitleaks outputs
