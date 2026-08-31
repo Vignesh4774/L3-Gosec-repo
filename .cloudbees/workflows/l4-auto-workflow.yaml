@@ -8,10 +8,11 @@ permissions:
   scm-token-org: read
   id-token: write
 jobs:
-  scan-and-evaluate:
-    outputs:
-      policy-subject: ${{ steps.snyk-sast-step.outputs.policy-subject }}
-    steps:
+  snyk-scan-job:
+    scan-and-evaluate:
+      outputs:
+       policy-subject: ${{ steps.snyk-sast-step.outputs.policy-subject }}
+      steps:
 
       - name: checkout-source-code
         uses: cloudbees-io/checkout@v1
@@ -40,7 +41,9 @@ jobs:
           echo "Low: ${{ steps.snyk-sast-step.outputs.low-count }}"
           echo "Policy Subject: ${{ steps.snyk-sast-step.outputs.policy-subject }}"
 
-scan-and-evaluate:
+  gitleaks-scan-and-evaluate:
+    needs:
+      - snyk-scan-job
     outputs:
       policy-subject: ${{ steps.gitleaks-step.outputs.policy-subject }}
     steps:
