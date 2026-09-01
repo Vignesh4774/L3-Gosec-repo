@@ -30,4 +30,4 @@ jobs:
         uses: docker://alpine:3.18
         name: Run step
   L4-scan-job:
-    uses: .cloudbees/workflows/auto-pe-rw-job-boundary.yaml@main
+    uses: .cloudbees/workflows/auto-pe-l4-continue-on-error.yaml@main
