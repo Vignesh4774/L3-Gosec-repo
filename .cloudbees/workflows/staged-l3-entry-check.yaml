@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 metadata:
   stages/v1alpha1:
-    - name: Stage 1
+    - name: scan
       jobs:
         - scan-job
     - name: Stage
