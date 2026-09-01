@@ -16,7 +16,8 @@ metadata:
         - post-scan-job
 jobs:
   independent-job:
-    needs: L4-scan-job
+    needs:
+      - L4-scan-job
     steps:
       - run: echo "independent-job running"
         uses: docker://golang:1.20.3-alpine3.17
