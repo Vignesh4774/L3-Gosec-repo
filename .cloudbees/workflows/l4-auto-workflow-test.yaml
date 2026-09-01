@@ -7,7 +7,6 @@ metadata:
   stages/v1alpha1:
     - name: Stage 1
       jobs:
-        - scan-job
         - L4-scan-job
     - name: Stage
       jobs:
@@ -16,10 +15,6 @@ metadata:
       jobs:
         - post-scan-job
 jobs:
-  scan-job:
-    steps:
-      - uses: docker://alpine:3.18
-        name: Run step
   independent-job:
     needs: L4-scan-job
     steps:
@@ -34,6 +29,4 @@ jobs:
         uses: docker://alpine:3.18
         name: Run step
   L4-scan-job:
-    needs:
-      - scan-job
     uses: .cloudbees/workflows/l4-auto-workflow.yaml@main
