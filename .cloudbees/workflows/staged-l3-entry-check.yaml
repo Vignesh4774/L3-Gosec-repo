@@ -17,9 +17,10 @@ metadata:
 jobs:
   scan-job:
     steps:
-      - run: echo "scan-job running"
-        uses: docker://alpine:3.18
-        name: Run step
+      - uses: cloudbees-io/checkout@v1
+        name: check out
+      - uses: cloudbees-io/gosec-plugin@v1
+        name: gosec
   independent-job:
     needs: scan-job
     steps:
